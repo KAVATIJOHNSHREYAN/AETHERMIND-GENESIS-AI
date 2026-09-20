@@ -13,7 +13,7 @@
   [![Build Status](https://img.shields.io/badge/Status-Production--Ready-10B981?style=for-the-badge&logo=checkmarx)](https://aethermind-genesis-ai.streamlit.app/)
   [![Last Updated](https://img.shields.io/badge/Last%20Updated-September%202026-8B5CF6?style=for-the-badge&logo=clock)](https://github.com/KAVATIJOHNSHREYAN/AETHERMIND-GENESIS-AI)
 
-  **[🚀 Streamlit Cloud Live App](https://aethermind-genesis-ai.streamlit.app/)** • **[⚡ Vercel Production Deployment](https://aethermindgenesisai.vercel.app/)** • **[🌐 Author Portfolio](https://kavatijohnshreyan-github-io.vercel.app/)**
+  **[🚀 Streamlit Cloud Official Live Application](https://aethermind-genesis-ai.streamlit.app/)** • **[🌐 Author Portfolio](https://kavatijohnshreyan-github-io.vercel.app/)**
 
 </div>
 
@@ -241,7 +241,7 @@ AetherMind Genesis utilizes 11 specialized AI Architect personas, each responsib
 │ Data Visualization│ Plotly Graph Objects / Three.js / 3D Force Graph / WebGL    │
 │ Diagram Engine    │ Mermaid.js / SVG Panzoom Canvas                             │
 │ NLP & AI          │ Custom RegEx Computational NLP Parser / pgvector RAG        │
-│ Deployment        │ Vercel Serverless Edge / Streamlit Cloud / Docker           │
+│ Deployment        │ Streamlit Cloud / Docker                                    │
 │ Styling           │ Vanilla CSS Glassmorphism / Plus Jakarta Sans / JetBrains   │
 └───────────────────┴─────────────────────────────────────────────────────────────┘
 ```
@@ -454,7 +454,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
 
 1. **Software Architecture & System Design:** Demonstrates modular hexagonal monolith design, microservices isolation, CQRS patterns, and event-driven topologies.
 2. **AI & Computational Intelligence:** Implements multi-agent debate simulations, dynamic entity parsing, and vector RAG pipelines without static templates.
-3. **Full-Stack Engineering:** Clean Python architecture, responsive custom CSS glassmorphism, Three.js WebGL graphics, and serverless edge deployments.
+3. **Full-Stack Engineering:** Clean Python architecture, responsive custom CSS glassmorphism, Three.js WebGL graphics, and Streamlit Cloud production deployment.
 4. **FinOps & SRE Competency:** Mathematical score modeling, cost allocation per inference, multi-AZ cloud redundancy, and risk mitigation matrices.
 5. **Engineering Leadership & Documentation:** Production-grade documentation, clean code organization, version control hygiene, and MIT open-source licensing.
 
@@ -476,7 +476,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
   | :--- | :---: | :--- |
   | 🐍 **Primary Language** | `Python 3.11+` | Core NLP Parser, Multi-Agent Engine & Optimization Logic |
   | 🎨 **UI & WebGL** | `Streamlit / Three.js` | Interactive 3D System Topology & Custom Glassmorphism |
-  | ⚡ **Deployment** | `Vercel / Streamlit Cloud` | Active Multi-Region Production Deployments |
+  | ⚡ **Deployment** | `Streamlit Cloud` | Active Streamlit Production Cloud Deployment |
   | 📜 **License** | `MIT License` | Open Source Enterprise Identity |
 
 </div>
