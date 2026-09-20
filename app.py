@@ -476,39 +476,8 @@ if "blueprint_data" in st.session_state:
             advantages_html = "".join([f"<li>✅ {adv}</li>" for adv in log.get("advantages", [])])
             disadvantages_html = "".join([f"<li>⚠️ {dis}</li>" for dis in log.get("disadvantages", [])])
 
-            st.markdown(f"""
-            <div style="background: rgba(16, 27, 45, 0.65); border: 1px solid rgba(255,255,255,0.08); border-left: 5px solid {role_color}; border-radius: 18px; padding: 1.5rem; margin-bottom: 1.5rem; backdrop-filter: blur(20px);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <div style="display: flex; align-items: center; gap: 0.6rem;">
-                        <span style="font-size: 1.5rem;">{log['avatar']}</span>
-                        <span style="font-size: 19px; font-weight: 700; color: #FFFFFF;">{log['agent']}</span>
-                        <span style="background: rgba(255,255,255,0.08); border: 1px solid {role_color}; color: {role_color}; font-size: 12px; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 9999px;">{log.get('badge', 'Architect Persona')}</span>
-                    </div>
-                    <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10B981; font-size: 13px; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 9999px;">
-                        Confidence: {confidence}%
-                    </div>
-                </div>
-                
-                <div style="font-size: 16px; color: #FFFFFF; font-weight: 600; margin-bottom: 0.75rem;">
-                    💡 <strong>Recommendation:</strong> {log.get('recommendation', '')}
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; font-size: 15px;">
-                    <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 12px; padding: 0.85rem 1rem;">
-                        <strong style="color: #10B981; font-size: 14px; text-transform: uppercase;">Advantages:</strong>
-                        <ul style="color: #C9D1D9; margin: 0.4rem 0 0 1.2rem; padding: 0;">
-                            {advantages_html}
-                        </ul>
-                    </div>
-                    <div style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 12px; padding: 0.85rem 1rem;">
-                        <strong style="color: #EF4444; font-size: 14px; text-transform: uppercase;">Trade-Offs / Disadvantages:</strong>
-                        <ul style="color: #C9D1D9; margin: 0.4rem 0 0 1.2rem; padding: 0;">
-                            {disadvantages_html}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            card_html = f"""<div style="background: rgba(16, 27, 45, 0.65); border: 1px solid rgba(255,255,255,0.08); border-left: 5px solid {role_color}; border-radius: 18px; padding: 1.5rem; margin-bottom: 1.5rem; backdrop-filter: blur(20px);"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;"><div style="display: flex; align-items: center; gap: 0.6rem;"><span style="font-size: 1.5rem;">{log['avatar']}</span><span style="font-size: 19px; font-weight: 700; color: #FFFFFF;">{log['agent']}</span><span style="background: rgba(255,255,255,0.08); border: 1px solid {role_color}; color: {role_color}; font-size: 12px; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 9999px;">{log.get('badge', 'Architect Persona')}</span></div><div style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10B981; font-size: 13px; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 9999px;">Confidence: {confidence}%</div></div><div style="font-size: 16px; color: #FFFFFF; font-weight: 600; margin-bottom: 0.75rem;">💡 <strong>Recommendation:</strong> {log.get('recommendation', '')}</div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; font-size: 15px;"><div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 12px; padding: 0.85rem 1rem;"><strong style="color: #10B981; font-size: 14px; text-transform: uppercase;">Advantages:</strong><ul style="color: #C9D1D9; margin: 0.4rem 0 0 1.2rem; padding: 0;">{advantages_html}</ul></div><div style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 12px; padding: 0.85rem 1rem;"><strong style="color: #EF4444; font-size: 14px; text-transform: uppercase;">Trade-Offs / Disadvantages:</strong><ul style="color: #C9D1D9; margin: 0.4rem 0 0 1.2rem; padding: 0;">{disadvantages_html}</ul></div></div></div>"""
+            st.markdown(card_html, unsafe_allow_html=True)
 
         # Final Consensus Result Card
         consensus = results.get("consensus", {})
