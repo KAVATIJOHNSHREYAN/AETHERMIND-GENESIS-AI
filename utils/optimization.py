@@ -1,53 +1,47 @@
-import math
-
 def calculate_architecture_scores(security_weight: float, perf_weight: float, cost_weight: float, domain_specs: dict) -> dict:
     """
-    Multi-Objective Optimization Function (Computational Intelligence):
-    Evaluates architecture trade-offs based on user priority weights and domain constraints.
-    Returns normalized sub-scores and Pareto trade-off recommendations.
+    Dynamic Multi-Objective Computational Scoring Engine:
+    Calculates security, latency, cost, and reliability metrics mathematically directly from the parsed graph depth and user weights.
     """
-    # Normalize weights so sum = 1.0
     total_w = max(security_weight + perf_weight + cost_weight, 0.001)
     sw = security_weight / total_w
     pw = perf_weight / total_w
     cw = cost_weight / total_w
 
-    # Base scores driven by domain complexity
-    base_sec = domain_specs.get("base_security_complexity", 75)
-    base_perf = domain_specs.get("base_perf_complexity", 70)
-    base_cost_efficiency = domain_specs.get("base_cost_efficiency", 80)
+    base_sec = domain_specs.get("base_security_complexity", 80)
+    base_perf = domain_specs.get("base_perf_complexity", 75)
+    base_cost_efficiency = domain_specs.get("base_cost_efficiency", 70)
 
-    # Core scores
+    # Mathematical scoring curves
     sec_score = min(100, round(base_sec * (0.8 + 0.4 * sw)))
-    perf_score = min(100, round(base_perf * (0.8 + 0.4 * pw) - (0.1 * sw)))
-    cost_score = min(100, round(base_cost_efficiency * (0.7 + 0.5 * cw) - (0.15 * pw) - (0.15 * sw)))
+    perf_score = min(100, round(base_perf * (0.8 + 0.4 * pw) - (0.05 * sw)))
+    cost_score = min(100, round(base_cost_efficiency * (0.7 + 0.5 * cw) - (0.1 * pw)))
 
-    # Enhanced Sub-Metrics (Scalability, Maintainability, Innovation, Reliability)
-    scalability_score = min(100, round(perf_score * 0.9 + sw * 10))
-    maintainability_score = min(100, round(cost_score * 0.85 + (1.0 - sw) * 15))
-    innovation_score = min(100, round((perf_score + sec_score) / 2.0 * 0.95))
-    reliability_score = min(100, round(sec_score * 0.6 + perf_score * 0.4))
+    scalability_score = min(100, round(perf_score * 0.9 + pw * 10))
+    maintainability_score = min(100, round(cost_score * 0.85 + cw * 15))
+    innovation_score = min(100, round((perf_score + sec_score) / 2.0))
+    reliability_score = min(100, round(sec_score * 0.5 + perf_score * 0.5))
 
-    # Overall Weighted Architecture Score
     overall_score = round((sec_score * sw) + (perf_score * pw) + (cost_score * cw))
 
-    # Determine Tech Recommendation Profile
+    # Dynamic Profile Generation
+    domain_name = domain_specs.get("domain", "System Core")
     if cw >= 0.5:
-        profile = "Cost-Optimized Serverless / Monolith"
-        est_monthly_cost = "$15 - $45 / mo"
-        primary_db = "PostgreSQL (Managed Shared) / SQLite"
+        profile = f"Cost-Optimized Serverless Architecture ({domain_name})"
+        est_monthly_cost = "$25 - $60 / mo"
+        primary_db = "PostgreSQL Shared Serverless / SQLite"
     elif pw >= 0.5:
-        profile = "High-Throughput Microservices & Redis Cluster"
+        profile = f"High-Throughput Microservices Cluster ({domain_name})"
         est_monthly_cost = "$150 - $450 / mo"
-        primary_db = "PostgreSQL + Redis Cache + Kafka/RabbitMQ"
+        primary_db = "PostgreSQL + Redis Cluster + Kafka"
     elif sw >= 0.5:
-        profile = "Zero-Trust Encrypted Infrastructure (Air-Gapped Vaults)"
+        profile = f"Zero-Trust Encrypted Vault Architecture ({domain_name})"
         est_monthly_cost = "$200 - $600 / mo"
-        primary_db = "PostgreSQL with Field-Level Encryption + Vault"
+        primary_db = "PostgreSQL Field-Level Encrypted + KMS"
     else:
-        profile = "Balanced Hybrid Cloud Architecture"
+        profile = f"Balanced Hybrid Architecture ({domain_name})"
         est_monthly_cost = "$50 - $120 / mo"
-        primary_db = "PostgreSQL (Supabase/RDS) + Redis Cache"
+        primary_db = "PostgreSQL (RDS) + Redis Cache"
 
     return {
         "overall_score": overall_score,
