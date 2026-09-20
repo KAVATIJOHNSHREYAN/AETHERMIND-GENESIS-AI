@@ -495,8 +495,10 @@ if "blueprint_data" in st.session_state:
         
         # Import HTML Canvas generator from graph_builder
         from utils.graph_builder import generate_interactive_html_graph
+        import streamlit.components.v1 as components
+        
         interactive_canvas = generate_interactive_html_graph(results["domain"], scores["architecture_profile"])
-        st.markdown(interactive_canvas, unsafe_allow_html=True)
+        components.html(interactive_canvas, height=580, scrolling=True)
 
         st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>📄 Mermaid.js Flowchart Syntax</h4>", unsafe_allow_html=True)
         st.code(mermaid_code, language="mermaid")
