@@ -246,4 +246,23 @@ def generate_interactive_html_graph(domain: str, tech_profile: str) -> str:
     """Alias for backwards compatibility."""
     return generate_interactive_3d_topology_graph(domain, tech_profile)
 
+def render_visual_mermaid(mermaid_code: str) -> str:
+    """
+    Renders visual Mermaid.js SVG graphic diagram inside an HTML container.
+    """
+    return f"""
+    <div style="background: rgba(16, 27, 45, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.5rem; text-align: center; backdrop-filter: blur(20px);">
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+        <div class="mermaid" style="display: flex; justify-content: center;">
+{mermaid_code}
+        </div>
+        <script>
+            if (window.mermaid) {{
+                mermaid.initialize({{ startOnLoad: true, theme: 'dark' }});
+            }}
+        </script>
+    </div>
+    """
+
+
 

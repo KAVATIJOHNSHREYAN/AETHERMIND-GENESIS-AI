@@ -7,7 +7,7 @@ import json
 import plotly.graph_objects as go
 from agents.engine import run_multi_agent_debate
 from utils.optimization import calculate_architecture_scores
-from utils.graph_builder import generate_mermaid_architecture, generate_interactive_3d_topology_graph
+from utils.graph_builder import generate_mermaid_architecture, generate_interactive_3d_topology_graph, render_visual_mermaid
 from utils.exporter import export_blueprint_markdown
 
 import base64
@@ -580,7 +580,11 @@ if "blueprint_data" in st.session_state:
         html_3d = generate_interactive_3d_topology_graph(results.get("domain", "System Core"), scores.get("architecture_profile", "Balanced Cloud"))
         st.components.v1.html(html_3d, height=640)
         
-        st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>🗺️ Mermaid.js System Architecture Spec</h4>", unsafe_allow_html=True)
+        st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>🖼️ Visual Flowchart Architecture Diagram</h4>", unsafe_allow_html=True)
+        html_mermaid = render_visual_mermaid(mermaid_code)
+        st.components.v1.html(html_mermaid, height=480)
+
+        st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>🗺️ Mermaid.js Code Specification</h4>", unsafe_allow_html=True)
         st.code(mermaid_code, language="mermaid")
 
     # TAB 3: Database DDL Schema & ER Diagram (Phase 4 Implement)
@@ -588,9 +592,14 @@ if "blueprint_data" in st.session_state:
         st.markdown("<h3 style='font-size:24px; color:#FFFFFF; margin-bottom:0.5rem;'>🗄️ Relational Database Schema & ER Diagram</h3>", unsafe_allow_html=True)
         st.caption(f"Target Database Engine: {scores['recommended_db']} | Multi-Table Entity-Relationship Topology")
         
-        # Display ER Diagram syntax
-        st.markdown("<h4 style='font-size:18px; color:#FFFFFF;'>🌐 Entity-Relationship (ER) Topology Diagram</h4>", unsafe_allow_html=True)
+        # Display Visual ER Diagram
+        st.markdown("<h4 style='font-size:18px; color:#FFFFFF;'>🖼️ Visual Entity-Relationship (ER) Diagram</h4>", unsafe_allow_html=True)
         er_code = results.get("er_diagram_code", "")
+        if er_code:
+            html_er = render_visual_mermaid(er_code)
+            st.components.v1.html(html_er, height=280)
+
+        st.markdown("<h4 style='font-size:18px; color:#FFFFFF;'>🌐 Entity-Relationship (ER) Topology Spec</h4>", unsafe_allow_html=True)
         st.code(er_code, language="mermaid")
         
         st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>📄 SQL DDL Schema Code</h4>", unsafe_allow_html=True)
