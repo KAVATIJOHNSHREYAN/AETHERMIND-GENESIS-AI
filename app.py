@@ -14,7 +14,7 @@ from utils.exporter import export_blueprint_markdown
 # ---------------------------------------------------------
 st.set_page_config(
     page_title="AetherMind Genesis | Autonomous AI OS",
-    page_icon="🌌",
+    page_icon="assets/logo.png",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -37,19 +37,26 @@ st.markdown("""
         letter-spacing: -0.01em !important;
     }
 
-    /* Subtle Grid Background Effect */
+    /* Animated Translucent Logo Watermark */
+    @keyframes watermarkFloat {
+        0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.04; }
+        50% { transform: translate(-48%, -52%) rotate(3deg) scale(1.05); opacity: 0.07; }
+        100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.04; }
+    }
+
     .stAppViewContainer::before {
         content: '';
         position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background-image: 
-            radial-gradient(rgba(59, 130, 246, 0.12) 1px, transparent 1px),
-            radial-gradient(rgba(139, 92, 246, 0.08) 1px, transparent 1px);
-        background-size: 32px 32px;
-        background-position: 0 0, 16px 16px;
+        top: 50%; left: 50%;
+        width: 700px; height: 700px;
+        background-image: url("app/static/logo.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
         pointer-events: none;
         z-index: 0;
-        opacity: 0.6;
+        animation: watermarkFloat 18s ease-in-out infinite;
+        filter: drop-shadow(0 0 40px rgba(59, 130, 246, 0.2));
     }
 
     /* Sidebar Styling */
@@ -57,7 +64,7 @@ st.markdown("""
         background-color: rgba(11, 18, 32, 0.85) !important;
         backdrop-filter: blur(20px) !important;
         border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-        padding-top: 2rem !important;
+        padding-top: 1.5rem !important;
     }
     section[data-testid="stSidebar"] label {
         color: #C9D1D9 !important;
@@ -96,6 +103,20 @@ st.markdown("""
         box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
     }
 
+    .brand-title-box {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+    .brand-logo-img {
+        width: 68px;
+        height: 68px;
+        border-radius: 16px;
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
     .brand-title {
         font-size: 52px !important;
         font-weight: 800 !important;
@@ -104,7 +125,7 @@ st.markdown("""
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         line-height: 1.15 !important;
-        margin-bottom: 0.5rem !important;
+        margin-bottom: 0 !important;
         text-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
     }
     .brand-subtitle {
@@ -239,7 +260,8 @@ st.markdown("""
 # Sidebar Engine
 # ---------------------------------------------------------
 with st.sidebar:
-    st.markdown("<h3 style='color:#FFFFFF; font-size:22px;'>⚡ Optimization Matrix</h3>", unsafe_allow_html=True)
+    st.image("assets/logo.png", use_container_width=True)
+    st.markdown("<h3 style='color:#FFFFFF; font-size:22px; margin-top:0.5rem;'>⚡ Optimization Matrix</h3>", unsafe_allow_html=True)
     st.caption("Adjust priority weights to balance Pareto constraints:")
     
     sec_weight = st.slider("🛡️ Security (OWASP / Zero-Trust)", 0.0, 1.0, 0.7, 0.1)
@@ -269,7 +291,10 @@ st.markdown("""
         <span class="status-badge status-badge-purple">🔒 API Keyless Runtime</span>
         <span class="status-badge">🧠 Computational Intelligence Engine</span>
     </div>
-    <div class="brand-title">AetherMind Genesis</div>
+    <div class="brand-title-box">
+        <img src="app/static/logo.png" class="brand-logo-img" alt="AetherMind Logo">
+        <div class="brand-title">AetherMind Genesis</div>
+    </div>
     <div class="brand-subtitle">Autonomous Computational System Architect & Multi-Agent Design Simulator</div>
 </div>
 """, unsafe_allow_html=True)
