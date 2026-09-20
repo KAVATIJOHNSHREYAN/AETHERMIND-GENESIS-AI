@@ -1,6 +1,8 @@
+
 import streamlit as st
 import time
 import json
+# pyrefly: ignore [missing-import]
 import plotly.graph_objects as go
 from agents.engine import run_multi_agent_debate
 from utils.optimization import calculate_architecture_scores
@@ -417,21 +419,17 @@ if "blueprint_data" in st.session_state:
         for log in results["debate_logs"]:
             role_color = log.get("role_color", "#3B82F6")
             confidence = log.get("confidence", 90)
-            agent_name = log.get("agent", "Architect")
-            avatar = log.get("avatar", "🤖")
-            badge = log.get("badge", "Architect Persona")
-            recommendation = log.get("recommendation", "")
             
-            advantages_list = "".join([f"<li style='margin-bottom:0.25rem;'>✅ {adv}</li>" for adv in log.get("advantages", [])])
-            disadvantages_list = "".join([f"<li style='margin-bottom:0.25rem;'>⚠️ {dis}</li>" for dis in log.get("disadvantages", [])])
+            advantages_html = "".join([f"<li>✅ {adv}</li>" for adv in log.get("advantages", [])])
+            disadvantages_html = "".join([f"<li>⚠️ {dis}</li>" for dis in log.get("disadvantages", [])])
 
-            card_html = f"""
-            <div style="background: rgba(16, 27, 45, 0.7); border: 1px solid rgba(255,255,255,0.08); border-left: 5px solid {role_color}; border-radius: 18px; padding: 1.5rem; margin-bottom: 1.5rem; backdrop-filter: blur(20px);">
+            st.markdown(f"""
+            <div style="background: rgba(16, 27, 45, 0.65); border: 1px solid rgba(255,255,255,0.08); border-left: 5px solid {role_color}; border-radius: 18px; padding: 1.5rem; margin-bottom: 1.5rem; backdrop-filter: blur(20px);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
                     <div style="display: flex; align-items: center; gap: 0.6rem;">
-                        <span style="font-size: 1.5rem;">{avatar}</span>
-                        <span style="font-size: 19px; font-weight: 700; color: #FFFFFF;">{agent_name}</span>
-                        <span style="background: rgba(255,255,255,0.08); border: 1px solid {role_color}; color: {role_color}; font-size: 12px; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 9999px;">{badge}</span>
+                        <span style="font-size: 1.5rem;">{log['avatar']}</span>
+                        <span style="font-size: 19px; font-weight: 700; color: #FFFFFF;">{log['agent']}</span>
+                        <span style="background: rgba(255,255,255,0.08); border: 1px solid {role_color}; color: {role_color}; font-size: 12px; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 9999px;">{log.get('badge', 'Architect Persona')}</span>
                     </div>
                     <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10B981; font-size: 13px; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 9999px;">
                         Confidence: {confidence}%
@@ -439,35 +437,29 @@ if "blueprint_data" in st.session_state:
                 </div>
                 
                 <div style="font-size: 16px; color: #FFFFFF; font-weight: 600; margin-bottom: 0.75rem;">
-                    💡 <strong>Recommendation:</strong> {recommendation}
+                    💡 <strong>Recommendation:</strong> {log.get('recommendation', '')}
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; font-size: 15px;">
                     <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 12px; padding: 0.85rem 1rem;">
                         <strong style="color: #10B981; font-size: 14px; text-transform: uppercase;">Advantages:</strong>
-                        <ul style="color: #C9D1D9; margin: 0.4rem 0 0 1.2rem; padding: 0; list-style-type: none;">
-                            {advantages_list}
+                        <ul style="color: #C9D1D9; margin: 0.4rem 0 0 1.2rem; padding: 0;">
+                            {advantages_html}
                         </ul>
                     </div>
                     <div style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 12px; padding: 0.85rem 1rem;">
                         <strong style="color: #EF4444; font-size: 14px; text-transform: uppercase;">Trade-Offs / Disadvantages:</strong>
-                        <ul style="color: #C9D1D9; margin: 0.4rem 0 0 1.2rem; padding: 0; list-style-type: none;">
-                            {disadvantages_list}
+                        <ul style="color: #C9D1D9; margin: 0.4rem 0 0 1.2rem; padding: 0;">
+                            {disadvantages_html}
                         </ul>
                     </div>
                 </div>
             </div>
-            """
-            st.markdown(card_html, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
 
         # Final Consensus Result Card
         consensus = results.get("consensus", {})
-        status_text = consensus.get('status', 'APPROVED')
-        agreement_rate = consensus.get('agreement_rate', 93)
-        primary_rec = consensus.get('primary_recommendation', '')
-        summary_text = consensus.get('summary', '')
-
-        consensus_html = f"""
+        st.markdown(f"""
         <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 20px; padding: 1.75rem; margin-top: 2rem; backdrop-filter: blur(20px);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <div style="display: flex; align-items: center; gap: 0.6rem;">
@@ -475,40 +467,96 @@ if "blueprint_data" in st.session_state:
                     <span style="font-size: 22px; font-weight: 800; color: #FFFFFF;">Final Multi-Agent Consensus Result</span>
                 </div>
                 <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10B981; color: #10B981; font-weight: 700; font-size: 13px; padding: 0.35rem 0.9rem; border-radius: 9999px;">
-                    STATUS: {status_text} ({agreement_rate}% Agreement)
+                    STATUS: {consensus.get('status', 'APPROVED')} ({consensus.get('agreement_rate', 93)}% Agreement)
                 </span>
             </div>
             <p style="font-size: 17px; color: #FFFFFF; font-weight: 600; margin-bottom: 0.5rem;">
-                {primary_rec}
+                {consensus.get('primary_recommendation', '')}
             </p>
             <p style="font-size: 16px; color: #C9D1D9; line-height: 1.6; margin: 0;">
-                {summary_text}
+                {consensus.get('summary', '')}
             </p>
         </div>
-        """
-        st.markdown(consensus_html, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-    # TAB 2: System Topology Diagram (Phase 3 Implement)
     with tab_diagram:
-        st.markdown("<h3 style='font-size:24px; color:#FFFFFF; margin-bottom:0.5rem;'>🗺️ Visual System Architecture Topology (11 Active Nodes)</h3>", unsafe_allow_html=True)
-        st.caption("Interactive Canvas: Client → Load Balancer → API Gateway → Auth → Backend → AI Engine → Vector DB / SQL DB / Redis / Storage / Monitoring")
-        
-        # Import HTML Canvas generator from graph_builder
-        from utils.graph_builder import generate_interactive_html_graph
-        import streamlit.components.v1 as components
-        
-        interactive_canvas = generate_interactive_html_graph(results["domain"], scores["architecture_profile"])
-        components.html(interactive_canvas, height=580, scrolling=True)
-
-        st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>📄 Mermaid.js Flowchart Syntax</h4>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-size:24px; color:#FFFFFF;'>🗺️ Visual System Architecture Graph (Mermaid.js)</h3>", unsafe_allow_html=True)
         st.code(mermaid_code, language="mermaid")
 
+    # TAB 3: Database DDL Schema & ER Diagram (Phase 4 Implement)
     with tab_db:
-        st.markdown(f"<h3 style='font-size:24px; color:#FFFFFF;'>🗄️ Relational DDL Database Schema ({scores['recommended_db']})</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-size:24px; color:#FFFFFF; margin-bottom:0.5rem;'>🗄️ Relational Database Schema & ER Diagram</h3>", unsafe_allow_html=True)
+        st.caption(f"Target Database Engine: {scores['recommended_db']} | Multi-Table Entity-Relationship Topology")
+        
+        # Display ER Diagram syntax
+        st.markdown("<h4 style='font-size:18px; color:#FFFFFF;'>🌐 Entity-Relationship (ER) Topology Diagram</h4>", unsafe_allow_html=True)
+        er_code = results.get("er_diagram_code", "")
+        st.code(er_code, language="mermaid")
+        
+        st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>📄 SQL DDL Schema Code</h4>", unsafe_allow_html=True)
         st.code(results["sql_schema"], language="sql")
+        
+        st.download_button(
+            label="💾 Download DDL SQL Schema (.sql)",
+            data=results["sql_schema"],
+            file_name="AetherMind_Genesis_Schema.sql",
+            mime="text/x-sql"
+        )
 
+    # TAB 4: OpenAPI & REST Endpoint Documentation (Phase 5 Implement)
     with tab_api:
-        st.markdown("<h3 style='font-size:24px; color:#FFFFFF;'>🔌 Generated OpenAPI / REST Specification</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-size:24px; color:#FFFFFF; margin-bottom:0.5rem;'>🔌 Swagger-Style REST API Documentation Workbench</h3>", unsafe_allow_html=True)
+        st.caption("Complete OpenAPI v3 endpoint specifications covering GET, POST, PUT, DELETE methods with sample payloads & error codes:")
+        
+        endpoints = results.get("api_endpoints_documentation", [])
+        for ep in endpoints:
+            method = ep["method"]
+            method_color = "#10B981" if method == "GET" else ("#3B82F6" if method == "POST" else ("#F59E0B" if method == "PUT" else "#EF4444"))
+            
+            headers_formatted = json.dumps(ep.get("headers", {}), indent=2)
+            req_formatted = json.dumps(ep.get("sample_request", {}), indent=2) if ep.get("sample_request") else "None (No Request Body)"
+            resp_formatted = json.dumps(ep.get("sample_response", {}), indent=2)
+
+            errors_html = "".join([f"<li><strong style='color:#EF4444;'>HTTP {err['code']}</strong>: {err['description']}</li>" for err in ep.get("error_codes", [])])
+
+            ep_html = f"""
+            <div style="background: rgba(16, 27, 45, 0.7); border: 1px solid rgba(255,255,255,0.08); border-left: 5px solid {method_color}; border-radius: 16px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; backdrop-filter: blur(20px);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="background: {method_color}; color: #FFFFFF; font-weight: 800; font-size: 13px; padding: 0.25rem 0.75rem; border-radius: 6px;">{method}</span>
+                        <span style="font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 700; color: #FFFFFF;">{ep['path']}</span>
+                    </div>
+                    <span style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #C9D1D9; font-size: 12px; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 9999px;">
+                        Auth: {ep['auth']}
+                    </span>
+                </div>
+                
+                <p style="font-size: 15px; color: #C9D1D9; margin-bottom: 1rem;">{ep['summary']}</p>
+                
+                <details style="color: #8B949E; cursor: pointer;">
+                    <summary style="font-weight: 600; color: #3B82F6; margin-bottom: 0.5rem;">🔍 View Headers, Request Payload, Sample Response & Error Codes</summary>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.75rem;">
+                        <div>
+                            <strong style="color: #FFFFFF; font-size: 13px;">Request Headers:</strong>
+                            <pre style="background: rgba(5,8,22,0.8); color: #22D3EE; padding: 0.6rem; border-radius: 8px; font-size: 12px;">{headers_formatted}</pre>
+                            <strong style="color: #FFFFFF; font-size: 13px;">Sample Request Body:</strong>
+                            <pre style="background: rgba(5,8,22,0.8); color: #C084FC; padding: 0.6rem; border-radius: 8px; font-size: 12px;">{req_formatted}</pre>
+                        </div>
+                        <div>
+                            <strong style="color: #FFFFFF; font-size: 13px;">Sample HTTP Response (200 OK):</strong>
+                            <pre style="background: rgba(5,8,22,0.8); color: #10B981; padding: 0.6rem; border-radius: 8px; font-size: 12px;">{resp_formatted}</pre>
+                            <strong style="color: #FFFFFF; font-size: 13px;">Error Codes:</strong>
+                            <ul style="margin: 0.4rem 0 0 1.2rem; padding: 0; font-size: 13px; color: #C9D1D9;">
+                                {errors_html}
+                            </ul>
+                        </div>
+                    </div>
+                </details>
+            </div>
+            """
+            st.markdown(ep_html, unsafe_allow_html=True)
+
+        st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>📄 OpenAPI v3.0 JSON Specification</h4>", unsafe_allow_html=True)
         st.code(results["api_spec"], language="json")
 
     with tab_export:
