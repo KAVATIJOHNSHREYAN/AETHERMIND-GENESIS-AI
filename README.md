@@ -2,6 +2,7 @@
 
 > **Transform plain-English ideas into production-ready software architecture blueprints using Multi-Agent Computational Reasoning and Multi-Objective Pareto Optimization.**
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://aethermind-genesis-ai.streamlit.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Framework: Streamlit](https://img.shields.io/badge/Framework-Streamlit-FF4B4B.svg)](https://streamlit.io/)
