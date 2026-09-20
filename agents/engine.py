@@ -274,6 +274,61 @@ CREATE INDEX idx_{sec_ent.lower()}_{main.lower()} ON {sec_ent.lower()}_records({
         "safety_pipeline": "Llama Guard 3 Guardrails + OWASP Prompt Injection Sanitizer"
     }
 
+    # ---------------------------------------------------------
+    # DYNAMIC MERMAID ER DIAGRAM SYNTHESIS
+    # ---------------------------------------------------------
+    er_diagram_code = f"""erDiagram
+    {main.upper()}_TENANTS ||--o{{ {main.upper()}_CORE : "provisions"
+"""
+    for sec_ent in sec_ents[:3]:
+        er_diagram_code += f'    {main.upper()}_CORE ||--o{{ {sec_ent.upper()}_RECORDS : "contains"\n'
+
+    # ---------------------------------------------------------
+    # DYNAMIC API ENDPOINTS WORKBENCH LIST SYNTHESIS
+    # ---------------------------------------------------------
+    api_endpoints_documentation = [
+        {
+            "method": "GET",
+            "path": f"/api/v1/{main.lower()}",
+            "auth": "Bearer OAuth2 JWT",
+            "summary": f"List and filter primary '{main}' domain records with pagination.",
+            "headers": {"Authorization": "Bearer <token>", "Accept": "application/json"},
+            "sample_request": None,
+            "sample_response": {"status": "success", "count": 1, "data": [{"id": "uuid-1234", "title": f"Sample {main}", "status": "ACTIVE"}]},
+            "error_codes": [{"code": 401, "description": "Unauthorized token claim or expired access token."}, {"code": 429, "description": "Rate limit exceeded (Max 100 req/min)."}]
+        },
+        {
+            "method": "POST",
+            "path": f"/api/v1/{main.lower()}",
+            "auth": "Bearer OAuth2 JWT",
+            "summary": f"Provision a new '{main}' core record and trigger asynchronous workflow queues.",
+            "headers": {"Authorization": "Bearer <token>", "Content-Type": "application/json"},
+            "sample_request": {"title": f"New {main} Record", "metadata": {"priority": "HIGH", "tags": [domain.lower()]}},
+            "sample_response": {"status": "created", "id": "uuid-5678", "created_at": "2026-09-21T00:00:00Z"},
+            "error_codes": [{"code": 400, "description": "Validation error in request payload structure."}, {"code": 409, "description": "Duplicate resource key conflict."}]
+        },
+        {
+            "method": "PUT",
+            "path": f"/api/v1/{main.lower()}/{{id}}",
+            "auth": "Bearer OAuth2 JWT",
+            "summary": f"Update metadata parameters and execution state for target '{main}' entity.",
+            "headers": {"Authorization": "Bearer <token>", "Content-Type": "application/json"},
+            "sample_request": {"status": "PROCESSING", "metadata": {"updated_by": "SystemArchitect"}},
+            "sample_response": {"status": "updated", "id": "uuid-5678", "updated_at": "2026-09-21T00:01:00Z"},
+            "error_codes": [{"code": 404, "description": "Target entity UUID not found."}]
+        },
+        {
+            "method": "DELETE",
+            "path": f"/api/v1/{main.lower()}/{{id}}",
+            "auth": "Bearer OAuth2 Admin JWT",
+            "summary": f"Archive and soft-delete '{main}' record with cascading child item cleanup.",
+            "headers": {"Authorization": "Bearer AdminToken"},
+            "sample_request": None,
+            "sample_response": {"status": "archived", "id": "uuid-5678"},
+            "error_codes": [{"code": 403, "description": "Forbidden: Requires Admin RBAC privilege."}]
+        }
+    ]
+
     return {
         "domain": domain,
         "arch_pattern": arch_pattern,
@@ -282,6 +337,8 @@ CREATE INDEX idx_{sec_ent.lower()}_{main.lower()} ON {sec_ent.lower()}_records({
         "consensus": consensus,
         "sql_schema": sql_schema,
         "api_spec": api_spec,
+        "api_endpoints_documentation": api_endpoints_documentation,
+        "er_diagram_code": er_diagram_code,
         "ai_pipeline": ai_pipeline,
         "base_security_complexity": reqs["sec_index"],
         "base_perf_complexity": reqs["perf_index"],
