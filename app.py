@@ -488,8 +488,17 @@ if "blueprint_data" in st.session_state:
         """
         st.markdown(consensus_html, unsafe_allow_html=True)
 
+    # TAB 2: System Topology Diagram (Phase 3 Implement)
     with tab_diagram:
-        st.markdown("<h3 style='font-size:24px; color:#FFFFFF;'>🗺️ Visual System Architecture Graph (Mermaid.js)</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-size:24px; color:#FFFFFF; margin-bottom:0.5rem;'>🗺️ Visual System Architecture Topology (11 Active Nodes)</h3>", unsafe_allow_html=True)
+        st.caption("Interactive Canvas: Client → Load Balancer → API Gateway → Auth → Backend → AI Engine → Vector DB / SQL DB / Redis / Storage / Monitoring")
+        
+        # Import HTML Canvas generator from graph_builder
+        from utils.graph_builder import generate_interactive_html_graph
+        interactive_canvas = generate_interactive_html_graph(results["domain"], scores["architecture_profile"])
+        st.markdown(interactive_canvas, unsafe_allow_html=True)
+
+        st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>📄 Mermaid.js Flowchart Syntax</h4>", unsafe_allow_html=True)
         st.code(mermaid_code, language="mermaid")
 
     with tab_db:
