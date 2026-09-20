@@ -9,6 +9,13 @@ from utils.optimization import calculate_architecture_scores
 from utils.graph_builder import generate_mermaid_architecture
 from utils.exporter import export_blueprint_markdown
 
+import base64
+
+# Load Logo Base64
+with open("assets/logo_b64.txt", "r") as f:
+    LOGO_B64 = f.read().strip()
+LOGO_DATA_URI = f"data:image/png;base64,{LOGO_B64}"
+
 # ---------------------------------------------------------
 # Page Configuration
 # ---------------------------------------------------------
@@ -22,42 +29,42 @@ st.set_page_config(
 # ---------------------------------------------------------
 # High-Precision Design System CSS (Vercel / Linear / Apple Standard)
 # ---------------------------------------------------------
-st.markdown("""
+st.markdown(f"""
 <style>
     /* Google Fonts Import */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
     /* Global Background & Base Typography */
-    html, body, .stApp {
+    html, body, .stApp {{
         background: linear-gradient(135deg, #050816 0%, #0B1220 35%, #111827 70%, #050816 100%) !important;
         background-attachment: fixed !important;
         color: #FFFFFF !important;
         font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
         line-height: 1.6 !important;
         letter-spacing: -0.01em !important;
-    }
+    }}
 
     /* Animated Translucent Logo Watermark */
-    @keyframes watermarkFloat {
-        0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.04; }
-        50% { transform: translate(-48%, -52%) rotate(3deg) scale(1.05); opacity: 0.07; }
-        100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.04; }
-    }
+    @keyframes watermarkFloat {{
+        0% {{ transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.05; }}
+        50% {{ transform: translate(-48%, -52%) rotate(3deg) scale(1.05); opacity: 0.09; }}
+        100% {{ transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.05; }}
+    }}
 
-    .stAppViewContainer::before {
+    .stAppViewContainer::before {{
         content: '';
         position: fixed;
         top: 50%; left: 50%;
-        width: 700px; height: 700px;
-        background-image: url("app/static/logo.png");
+        width: 750px; height: 750px;
+        background-image: url("{LOGO_DATA_URI}");
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
         pointer-events: none;
         z-index: 0;
         animation: watermarkFloat 18s ease-in-out infinite;
-        filter: drop-shadow(0 0 40px rgba(59, 130, 246, 0.2));
-    }
+        filter: drop-shadow(0 0 50px rgba(59, 130, 246, 0.25));
+    }}
 
     /* Sidebar Styling */
     section[data-testid="stSidebar"] {
@@ -292,7 +299,7 @@ st.markdown("""
         <span class="status-badge">🧠 Computational Intelligence Engine</span>
     </div>
     <div class="brand-title-box">
-        <img src="app/static/logo.png" class="brand-logo-img" alt="AetherMind Logo">
+        <img src="{LOGO_DATA_URI}" class="brand-logo-img" alt="AetherMind Logo">
         <div class="brand-title">AetherMind Genesis</div>
     </div>
     <div class="brand-subtitle">Autonomous Computational System Architect & Multi-Agent Design Simulator</div>
