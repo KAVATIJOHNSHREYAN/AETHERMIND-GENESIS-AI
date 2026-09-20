@@ -32,3 +32,5 @@ venv.bak/
 
 # Streamlit
 .streamlit/
+
+.vercel
