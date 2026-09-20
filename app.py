@@ -664,7 +664,8 @@ if "blueprint_data" in st.session_state:
             results["debate_logs"],
             mermaid_code,
             results["sql_schema"],
-            results["api_spec"]
+            results["api_spec"],
+            results.get("ai_pipeline")
         )
 
         col_dl1, col_dl2 = st.columns([1, 1])
