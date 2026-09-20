@@ -292,7 +292,7 @@ with st.sidebar:
 # ---------------------------------------------------------
 # Main UI Header & Input Console
 # ---------------------------------------------------------
-st.markdown("""
+st.markdown(f"""
 <div class="header-container">
     <div class="status-badge-container">
         <span class="status-badge">⚡ Offline Mode Enabled</span>
