@@ -460,16 +460,24 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
 
 ---
 
-## 📊 GitHub Statistics & Repositories
+## 📊 GitHub Project Metrics & Ecosystem
 
 <div align="center">
 
-  <img src="https://github-readme-stats.vercel.app/api?username=KAVATIJOHNSHREYAN&show_icons=true&theme=dark&count_private=true" alt="GitHub Stats" width="48%" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=KAVATIJOHNSHREYAN&layout=compact&theme=dark" alt="Top Languages" width="48%" />
+  [![GitHub Stars](https://img.shields.io/github/stars/KAVATIJOHNSHREYAN/AETHERMIND-GENESIS-AI?style=for-the-badge&logo=github&color=F59E0B)](https://github.com/KAVATIJOHNSHREYAN/AETHERMIND-GENESIS-AI/stargazers)
+  [![GitHub Forks](https://img.shields.io/github/forks/KAVATIJOHNSHREYAN/AETHERMIND-GENESIS-AI?style=for-the-badge&logo=github&color=3B82F6)](https://github.com/KAVATIJOHNSHREYAN/AETHERMIND-GENESIS-AI/network/members)
+  [![GitHub Issues](https://img.shields.io/github/issues/KAVATIJOHNSHREYAN/AETHERMIND-GENESIS-AI?style=for-the-badge&logo=github&color=10B981)](https://github.com/KAVATIJOHNSHREYAN/AETHERMIND-GENESIS-AI/issues)
+  [![GitHub Repo Size](https://img.shields.io/github/repo-size/KAVATIJOHNSHREYAN/AETHERMIND-GENESIS-AI?style=for-the-badge&logo=github&color=8B5CF6)](https://github.com/KAVATIJOHNSHREYAN/AETHERMIND-GENESIS-AI)
+  [![Maintained](https://img.shields.io/badge/Maintained%3F-yes-10B981.svg?style=for-the-badge&logo=github)](https://github.com/KAVATIJOHNSHREYAN/AETHERMIND-GENESIS-AI)
 
-  <br><br>
+  <br>
 
-  ![Visitor Counter](https://page-views.glitch.me/badge?page_id=KAVATIJOHNSHREYAN.AETHERMIND-GENESIS-AI)
+  | Metric | Value | Description |
+  | :--- | :---: | :--- |
+  | 🐍 **Primary Language** | `Python 3.11+` | Core NLP Parser, Multi-Agent Engine & Optimization Logic |
+  | 🎨 **UI & WebGL** | `Streamlit / Three.js` | Interactive 3D System Topology & Custom Glassmorphism |
+  | ⚡ **Deployment** | `Vercel / Streamlit Cloud` | Active Multi-Region Production Deployments |
+  | 📜 **License** | `MIT License` | Open Source Enterprise Identity |
 
 </div>
 
