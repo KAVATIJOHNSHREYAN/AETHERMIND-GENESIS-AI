@@ -44,11 +44,18 @@ css_style = """
         letter-spacing: -0.01em !important;
     }
 
-    /* Animated Translucent Logo Watermark */
+    /* Hide Top Streamlit Header Bar */
+    header[data-testid="stHeader"] {
+        background-color: transparent !important;
+        background: transparent !important;
+        display: none !important;
+    }
+
+    /* Animated Translucent Logo Watermark - Straight Pose */
     @keyframes watermarkFloat {
-        0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.05; }
-        50% { transform: translate(-48%, -52%) rotate(3deg) scale(1.05); opacity: 0.09; }
-        100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.05; }
+        0% { transform: translate(-50%, -50%) scale(1); opacity: 0.05; }
+        50% { transform: translate(-50%, -54%) scale(1.04); opacity: 0.09; }
+        100% { transform: translate(-50%, -50%) scale(1); opacity: 0.05; }
     }
 
     .stAppViewContainer::before {
@@ -62,7 +69,7 @@ css_style = """
         background-size: contain;
         pointer-events: none;
         z-index: 0;
-        animation: watermarkFloat 18s ease-in-out infinite;
+        animation: watermarkFloat 14s ease-in-out infinite;
         filter: drop-shadow(0 0 50px rgba(59, 130, 246, 0.25));
     }
 
@@ -82,8 +89,8 @@ css_style = """
     /* Header Section & Glow */
     .header-container {
         position: relative;
-        padding-bottom: 2rem;
-        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        margin-bottom: 2rem;
     }
     .status-badge-container {
         display: flex;
@@ -111,21 +118,11 @@ css_style = """
     }
 
     .brand-title-box {
-        display: flex;
-        align-items: center;
-        gap: 1.25rem;
         margin-bottom: 0.5rem;
-    }
-    .brand-logo-img {
-        width: 68px;
-        height: 68px;
-        border-radius: 16px;
-        box-shadow: 0 0 25px rgba(59, 130, 246, 0.45);
-        border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .brand-title {
-        font-size: 52px !important;
+        font-size: 56px !important;
         font-weight: 800 !important;
         letter-spacing: -0.035em !important;
         background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 40%, #3B82F6 80%, #8B5CF6 100%);
@@ -268,7 +265,7 @@ st.markdown(css_style, unsafe_allow_html=True)
 # Sidebar Engine
 # ---------------------------------------------------------
 with st.sidebar:
-    st.image("assets/logo.png", use_container_width=True)
+    st.image("assets/logo_cropped.png", use_container_width=True)
     st.markdown("<h3 style='color:#FFFFFF; font-size:22px; margin-top:0.5rem;'>⚡ Optimization Matrix</h3>", unsafe_allow_html=True)
     st.caption("Adjust priority weights to balance Pareto constraints:")
     
@@ -292,7 +289,7 @@ with st.sidebar:
 # ---------------------------------------------------------
 # Main UI Header & Input Console
 # ---------------------------------------------------------
-st.markdown(f"""
+st.markdown("""
 <div class="header-container">
     <div class="status-badge-container">
         <span class="status-badge">⚡ Offline Mode Enabled</span>
@@ -300,7 +297,6 @@ st.markdown(f"""
         <span class="status-badge">🧠 Computational Intelligence Engine</span>
     </div>
     <div class="brand-title-box">
-        <img src="{LOGO_DATA_URI}" class="brand-logo-img" alt="AetherMind Logo">
         <div class="brand-title">AetherMind Genesis</div>
     </div>
     <div class="brand-subtitle">Autonomous Computational System Architect & Multi-Agent Design Simulator</div>
