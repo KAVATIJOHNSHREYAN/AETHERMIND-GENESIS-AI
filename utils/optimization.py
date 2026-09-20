@@ -4,7 +4,7 @@ def calculate_architecture_scores(security_weight: float, perf_weight: float, co
     """
     Multi-Objective Optimization Function (Computational Intelligence):
     Evaluates architecture trade-offs based on user priority weights and domain constraints.
-    Returns normalized scores (0-100) and Pareto trade-off recommendations.
+    Returns normalized sub-scores and Pareto trade-off recommendations.
     """
     # Normalize weights so sum = 1.0
     total_w = max(security_weight + perf_weight + cost_weight, 0.001)
@@ -17,20 +17,21 @@ def calculate_architecture_scores(security_weight: float, perf_weight: float, co
     base_perf = domain_specs.get("base_perf_complexity", 70)
     base_cost_efficiency = domain_specs.get("base_cost_efficiency", 80)
 
-    # Compute Pareto Trade-off Penalty / Boost
-    # High security often decreases speed slightly and increases cloud cost
+    # Core scores
     sec_score = min(100, round(base_sec * (0.8 + 0.4 * sw)))
-    
-    # High performance requires caching / clustering which increases cost
     perf_score = min(100, round(base_perf * (0.8 + 0.4 * pw) - (0.1 * sw)))
-    
-    # Cost efficiency is higher when cost weight is prioritized (simpler tech stack)
     cost_score = min(100, round(base_cost_efficiency * (0.7 + 0.5 * cw) - (0.15 * pw) - (0.15 * sw)))
 
-    # Overall Weighted Architecture Score (Fitness Function)
+    # Enhanced Sub-Metrics (Scalability, Maintainability, Innovation, Reliability)
+    scalability_score = min(100, round(perf_score * 0.9 + sw * 10))
+    maintainability_score = min(100, round(cost_score * 0.85 + (1.0 - sw) * 15))
+    innovation_score = min(100, round((perf_score + sec_score) / 2.0 * 0.95))
+    reliability_score = min(100, round(sec_score * 0.6 + perf_score * 0.4))
+
+    # Overall Weighted Architecture Score
     overall_score = round((sec_score * sw) + (perf_score * pw) + (cost_score * cw))
 
-    # Determine Optimal Tech Recommendation Profile
+    # Determine Tech Recommendation Profile
     if cw >= 0.5:
         profile = "Cost-Optimized Serverless / Monolith"
         est_monthly_cost = "$15 - $45 / mo"
@@ -53,6 +54,10 @@ def calculate_architecture_scores(security_weight: float, perf_weight: float, co
         "security_score": sec_score,
         "performance_score": perf_score,
         "cost_efficiency_score": cost_score,
+        "scalability_score": scalability_score,
+        "maintainability_score": maintainability_score,
+        "innovation_score": innovation_score,
+        "reliability_score": reliability_score,
         "architecture_profile": profile,
         "estimated_monthly_cost": est_monthly_cost,
         "recommended_db": primary_db,
