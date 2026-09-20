@@ -402,20 +402,73 @@ if "blueprint_data" in st.session_state:
     st.markdown("<br><hr style='border-color:rgba(255,255,255,0.08);'><br>", unsafe_allow_html=True)
 
     # 3. Enterprise Tabs Workbench
-    tab_debate, tab_diagram, tab_db, tab_api, tab_export = st.tabs([
+    tab_analytics, tab_debate, tab_diagram, tab_db, tab_api, tab_deploy, tab_export = st.tabs([
+        "📊 Phase 8: Analytics Dashboard",
         "🗣️ Multi-Agent Debate Console",
         "🗺️ System Topology Diagram",
         "🗄️ Database DDL Schema",
         "🔌 OpenAPI Specification",
-        "📥 Blueprint Export Hub"
+        "🚀 Phase 7: Deployment Hub",
+        "📥 Phase 9: Export Center"
     ])
 
-    # TAB 1: Multi-Agent Collaboration View (Phase 2 Implement)
+    # ---------------------------------------------------------
+    # PHASE 8 IMPLEMENTATION: Professional Analytics Dashboard
+    # ---------------------------------------------------------
+    with tab_analytics:
+        st.markdown("<h3 style='font-size:24px; color:#FFFFFF; margin-bottom:0.5rem;'>📊 Phase 8: Interactive Analytics & System Health Gauges</h3>", unsafe_allow_html=True)
+        st.caption("Real-time circular progress gauges, trend heatmaps, and metric score breakdowns:")
+        
+        g1, g2, g3 = st.columns(3)
+        with g1:
+            fig_g1 = go.Figure(go.Indicator(
+                mode="gauge+number",
+                value=scores.get('security_score', 85),
+                title={'text': "Security Index (OWASP)"},
+                gauge={'axis': {'range': [None, 100]}, 'bar': {'color': "#22D3EE"}}
+            ))
+            fig_g1.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color='#FFF', height=240, margin=dict(l=20, r=20, t=30, b=20))
+            st.plotly_chart(fig_g1, use_container_width=True)
+
+        with g2:
+            fig_g2 = go.Figure(go.Indicator(
+                mode="gauge+number",
+                value=scores.get('performance_score', 75),
+                title={'text': "Performance Index (RPS)"},
+                gauge={'axis': {'range': [None, 100]}, 'bar': {'color': "#8B5CF6"}}
+            ))
+            fig_g2.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color='#FFF', height=240, margin=dict(l=20, r=20, t=30, b=20))
+            st.plotly_chart(fig_g2, use_container_width=True)
+
+        with g3:
+            fig_g3 = go.Figure(go.Indicator(
+                mode="gauge+number",
+                value=scores.get('cost_efficiency_score', 70),
+                title={'text': "Cost Efficiency Index"},
+                gauge={'axis': {'range': [None, 100]}, 'bar': {'color': "#10B981"}}
+            ))
+            fig_g3.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color='#FFF', height=240, margin=dict(l=20, r=20, t=30, b=20))
+            st.plotly_chart(fig_g3, use_container_width=True)
+
+        # Heatmap Matrix
+        st.markdown("<h4 style='font-size:18px; color:#FFFFFF; margin-top:1rem;'>🔥 Sub-System Performance & Vulnerability Heatmap</h4>", unsafe_allow_html=True)
+        heatmap_fig = go.Figure(data=go.Heatmap(
+            z=[[scores.get('security_score', 85), scores.get('performance_score', 75), scores.get('scalability_score', 78)],
+               [scores.get('maintainability_score', 82), scores.get('innovation_score', 88), scores.get('reliability_score', 90)]],
+            x=['Security / OWASP', 'Performance / Speed', 'Scalability / Scale'],
+            y=['Maintainability Core', 'Reliability Layer'],
+            colorscale='Viridis'
+        ))
+        heatmap_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font_color='#FFF', height=250, margin=dict(l=20, r=20, t=20, b=20))
+        st.plotly_chart(heatmap_fig, use_container_width=True)
+
+    # ---------------------------------------------------------
+    # EXISTING TABS (Preserved 100%)
+    # ---------------------------------------------------------
     with tab_debate:
         st.markdown("<h3 style='font-size:24px; color:#FFFFFF; margin-bottom:0.5rem;'>🗣️ Multi-Agent Collaborative Reasoning Stream</h3>", unsafe_allow_html=True)
         st.caption("Threaded discussion among 9 specialized AI Architect personas evaluating system trade-offs:")
         
-        # Render 9 AI Architect Cards
         for log in results["debate_logs"]:
             role_color = log.get("role_color", "#3B82F6")
             confidence = log.get("confidence", 90)
