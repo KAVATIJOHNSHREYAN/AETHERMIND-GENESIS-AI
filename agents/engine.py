@@ -1,6 +1,7 @@
 def run_multi_agent_debate(prompt: str, sec_weight: float, perf_weight: float, cost_weight: float) -> dict:
     """
-    Simulates real-time multi-agent reasoning, debate, and blueprint generation without external API dependencies.
+    Simulates real-time multi-agent reasoning, debate, and blueprint generation across 9 specialized AI Architect personas.
+    Returns structured recommendations, pros/cons, confidence scores, and consensus results.
     """
     prompt_lower = prompt.lower()
 
@@ -16,44 +17,111 @@ def run_multi_agent_debate(prompt: str, sec_weight: float, perf_weight: float, c
     else:
         domain = "general_saas"
 
-    # 1. Multi-Agent Debate Simulation Logs
+    # ---------------------------------------------------------
+    # 9 Specialized AI Architect Personas Structured Output
+    # ---------------------------------------------------------
     debate_logs = [
         {
             "agent": "Lead Architect",
             "avatar": "👑",
-            "message": f"Initiating system design synthesis for concept: '{prompt}'. Analyzing core constraints across Security, Latency, and Budget..."
+            "role_color": "#3B82F6", # Electric Blue
+            "badge": "Strategy & Synthesis",
+            "recommendation": f"Adopt a modular component architecture tailored for {domain.upper()} domain requirements.",
+            "advantages": ["Clear separation of concerns", "High maintainability", "Flexible scaling path"],
+            "disadvantages": ["Slightly higher initial setup complexity"],
+            "confidence": 96
+        },
+        {
+            "agent": "Security Architect",
+            "avatar": "🛡️",
+            "role_color": "#22D3EE", # Cyan
+            "badge": "Zero-Trust & OWASP",
+            "recommendation": f"Enforce mandatory OAuth2 + PKCE authentication, AES-256 field encryption, and TLS 1.3.",
+            "advantages": ["Prevents unauthorized access", "Compliant with industry regulations"],
+            "disadvantages": ["Adds encryption overhead on database I/O"],
+            "confidence": 94 if sec_weight >= 0.5 else 88
+        },
+        {
+            "agent": "Backend Architect",
+            "avatar": "⚙️",
+            "role_color": "#8B5CF6", # Purple
+            "badge": "API & Runtime Core",
+            "recommendation": "Deploy an asynchronous REST/GraphQL gateway with rate-limiting and connection pooling.",
+            "advantages": ["Prevents server overload", "High throughput handling"],
+            "disadvantages": ["Requires connection pool tuning"],
+            "confidence": 92
+        },
+        {
+            "agent": "Frontend Architect",
+            "avatar": "🎨",
+            "role_color": "#EC4899", # Pink
+            "badge": "UI/UX & Client State",
+            "recommendation": "Build a responsive single-page client with optimistic UI updates and server-side rendering (SSR).",
+            "advantages": ["Sub-second page loads", "Seamless user feedback"],
+            "disadvantages": ["Higher client bundle size"],
+            "confidence": 90
+        },
+        {
+            "agent": "Database Architect",
+            "avatar": "🗄️",
+            "role_color": "#F59E0B", # Amber
+            "badge": "Data Topology & DDL",
+            "recommendation": "Use relational PostgreSQL with composite indexes on high-frequency query columns.",
+            "advantages": ["ACID compliance guarantees", "Fast lookup performance"],
+            "disadvantages": ["Requires schema migration management"],
+            "confidence": 95
+        },
+        {
+            "agent": "Cloud Architect",
+            "avatar": "☁️",
+            "role_color": "#30E3CA", # Teal
+            "badge": "Infrastructure & Cost",
+            "recommendation": "Deploy on managed serverless nodes (Vercel/Supabase or AWS ECS) with auto-scaling triggers.",
+            "advantages": ["Pay-per-use cost efficiency", "Zero server maintenance"],
+            "disadvantages": ["Potential cold-start latency spikes"],
+            "confidence": 89 if cost_weight >= 0.5 else 93
+        },
+        {
+            "agent": "DevOps Architect",
+            "avatar": "🚀",
+            "role_color": "#10B981", # Emerald
+            "badge": "CI/CD & Observability",
+            "recommendation": "Implement automated GitHub Actions CI/CD pipelines with Prometheus metrics & OpenTelemetry logging.",
+            "advantages": ["Automated zero-downtime deployments", "Real-time error tracking"],
+            "disadvantages": ["Requires pipeline setup time"],
+            "confidence": 91
+        },
+        {
+            "agent": "AI Engineer",
+            "avatar": "🤖",
+            "role_color": "#6366F1", # Indigo
+            "badge": "Model & Context Pipeline",
+            "recommendation": "Integrate local vector embeddings (Chroma/FAISS) with streaming token inference.",
+            "advantages": ["Fast response latency", "Rich contextual search"],
+            "disadvantages": ["Vector memory index overhead"],
+            "confidence": 93
+        },
+        {
+            "agent": "QA Engineer",
+            "avatar": "🧪",
+            "role_color": "#EF4444", # Red
+            "badge": "Testing & Resilience",
+            "recommendation": "Enforce mandatory E2E Playwright tests and automated API load testing (k6).",
+            "advantages": ["High regression prevention", "Verified stress tolerance"],
+            "disadvantages": ["Increases build step duration"],
+            "confidence": 95
         }
     ]
 
-    # Security Agent perspective
-    if sec_weight >= 0.4 or domain in ["fintech", "healthcare"]:
-        sec_msg = f"CRITICAL REQUIREMENT ({domain.upper()} domain): Implementing mandatory OAuth2 + PKCE auth, TLS 1.3 in transit, and AES-256 field encryption for sensitive fields. Enforcing Zero-Trust microsegmentation."
-    else:
-        sec_msg = "Standard Security Profile: JWT Token Authentication with HTTPS endpoint enforcement and OWASP Top 10 automated sanitization."
-    debate_logs.append({"agent": "Security Architect", "avatar": "🛡️", "message": sec_msg})
+    # Consensus Synthesis
+    consensus = {
+        "status": "APPROVED",
+        "agreement_rate": 93.2,
+        "summary": f"All 9 specialized AI architects have reached consensus for the {domain.upper()} blueprint. The architecture synthesizes Zero-Trust security, PostgreSQL data integrity, async API layers, and auto-scaling cloud infrastructure.",
+        "primary_recommendation": f"Proceed with {domain.upper()} Modular Architecture Blueprint."
+    }
 
-    # Performance Agent perspective
-    if perf_weight >= 0.4 or domain in ["ai_media", "fintech"]:
-        perf_msg = "HIGH LATENCY THREAT: Enabling Redis cluster caching layer for session state and hot queries. Offloading heavy background computations to async RabbitMQ workers."
-    else:
-        perf_msg = "Balanced Performance: Standard indexed database queries with simple HTTP response caching. Expected latency < 150ms."
-    debate_logs.append({"agent": "Performance Architect", "avatar": "⚡", "message": perf_msg})
-
-    # Cost Agent perspective
-    if cost_weight >= 0.4:
-        cost_msg = "BUDGET RESTRAINT: Recommending managed Serverless infrastructure (Supabase + Vercel/Cloudflare Workers) to minimize idle server costs below $30/mo."
-    else:
-        cost_msg = "Infrastructure Investment: Budget permits dedicated containerized services (AWS ECS / Kubernetes) to ensure 99.99% uptime SLA."
-    debate_logs.append({"agent": "Cost Architect", "avatar": "💰", "message": cost_msg})
-
-    # Lead Architect Consensus
-    debate_logs.append({
-        "agent": "Lead Architect",
-        "avatar": "👑",
-        "message": "Consensus reached among all 4 specialized agents! Synthesizing final relational DB schema, API routes, and C4 architecture graph."
-    })
-
-    # 2. Database Schema Generation (SQL)
+    # SQL Schema DDL
     if domain == "fintech":
         sql_schema = """-- AetherMind Genesis: FinTech DB Schema
 CREATE TABLE users (
@@ -126,7 +194,7 @@ CREATE TABLE system_logs (
 );
 """
 
-    # 3. API OpenAPI JSON Specification
+    # OpenAPI JSON Specification
     api_spec = f"""{{
   "openapi": "3.0.0",
   "info": {{
@@ -162,6 +230,7 @@ CREATE TABLE system_logs (
     return {
         "domain": domain,
         "debate_logs": debate_logs,
+        "consensus": consensus,
         "sql_schema": sql_schema,
         "api_spec": api_spec,
         "base_security_complexity": 85 if domain in ["fintech", "healthcare"] else 70,
