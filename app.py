@@ -58,6 +58,29 @@ css_style = """
         100% { transform: translate(-50%, -50%) scale(1); opacity: 0.05; }
     }
 
+    /* Neural Synapse Circuit Watermark Underlay */
+    @keyframes neuralPulse {
+        0% { transform: translate(-50%, -50%) scale(1); opacity: 0.12; }
+        50% { transform: translate(-50%, -54%) scale(1.06); opacity: 0.22; }
+        100% { transform: translate(-50%, -50%) scale(1); opacity: 0.12; }
+    }
+
+    .stAppViewContainer::after {
+        content: '';
+        position: fixed;
+        top: 50%; left: 50%;
+        width: 850px; height: 850px;
+        background-image: 
+            radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.25) 0%, transparent 60%),
+            repeating-radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.15) 0, rgba(34, 211, 238, 0.15) 2px, transparent 3px, transparent 40px),
+            radial-gradient(ellipse at 30% 30%, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
+            radial-gradient(ellipse at 70% 70%, rgba(59, 130, 246, 0.2) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+        animation: neuralPulse 14s ease-in-out infinite;
+        filter: drop-shadow(0 0 60px rgba(139, 92, 246, 0.3));
+    }
+
     .stAppViewContainer::before {
         content: '';
         position: fixed;
@@ -68,7 +91,7 @@ css_style = """
         background-position: center;
         background-size: contain;
         pointer-events: none;
-        z-index: 0;
+        z-index: 1;
         animation: watermarkFloat 14s ease-in-out infinite;
         filter: drop-shadow(0 0 50px rgba(59, 130, 246, 0.25));
     }
