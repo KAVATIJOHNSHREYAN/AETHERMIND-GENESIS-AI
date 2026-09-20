@@ -7,7 +7,7 @@ import json
 import plotly.graph_objects as go
 from agents.engine import run_multi_agent_debate
 from utils.optimization import calculate_architecture_scores
-from utils.graph_builder import generate_mermaid_architecture
+from utils.graph_builder import generate_mermaid_architecture, generate_interactive_3d_topology_graph
 from utils.exporter import export_blueprint_markdown
 
 import base64
@@ -574,7 +574,13 @@ if "blueprint_data" in st.session_state:
         """, unsafe_allow_html=True)
 
     with tab_diagram:
-        st.markdown("<h3 style='font-size:24px; color:#FFFFFF;'>🗺️ Visual System Architecture Graph (Mermaid.js)</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-size:24px; color:#FFFFFF; margin-bottom:0.5rem;'>🌌 3D Interactive WebGL System Network Topology</h3>", unsafe_allow_html=True)
+        st.caption("Rotate, zoom, and inspect all 11 active microservice infrastructure nodes in 3D WebGL space:")
+        
+        html_3d = generate_interactive_3d_topology_graph(results.get("domain", "System Core"), scores.get("architecture_profile", "Balanced Cloud"))
+        st.components.v1.html(html_3d, height=640)
+        
+        st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>🗺️ Mermaid.js System Architecture Spec</h4>", unsafe_allow_html=True)
         st.code(mermaid_code, language="mermaid")
 
     # TAB 3: Database DDL Schema & ER Diagram (Phase 4 Implement)

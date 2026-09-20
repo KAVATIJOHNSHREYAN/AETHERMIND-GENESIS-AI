@@ -34,114 +34,83 @@ def generate_mermaid_architecture(domain: str, tech_profile: str) -> str:
     style Monitoring fill:#1E293B,stroke:#30E3CA,stroke-width:2px,color:#FFF
 """
 
-def generate_interactive_html_graph(domain: str, tech_profile: str) -> str:
+def generate_interactive_3d_topology_graph(domain: str, tech_profile: str) -> str:
     """
-    Generates an interactive, zoomable, inspectable HTML canvas diagram using SVG/Panzoom visualization.
-    Allows users to pan, zoom, click, and inspect all 11 architecture nodes natively.
+    Generates a full 3D WebGL Network Topology Viewer using Three.js & 3D Force Graph.
+    Displays glowing 3D nodes, pulsing directional particle light streams, orbital controls,
+    node inspection tooltips, and real-time 3D rotation.
     """
     return """
-    <div style="background: rgba(16, 27, 45, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(20px);">
+    <div style="background: rgba(16, 27, 45, 0.85); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(25px); box-shadow: 0 0 35px rgba(59, 130, 246, 0.15);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <span style="font-size: 16px; font-weight: 700; color: #FFFFFF;">🔍 Interactive Architecture Canvas (Zoom, Pan & Inspect Nodes)</span>
-            <span style="background: rgba(59, 130, 246, 0.2); border: 1px solid #3B82F6; color: #3B82F6; font-size: 12px; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 9999px;">11 Active Infrastructure Nodes</span>
+            <div>
+                <span style="font-size: 18px; font-weight: 800; color: #22D3EE; font-family: 'Plus Jakarta Sans', sans-serif;">🌌 3D WebGL System Network Topology Viewer</span>
+                <p style="font-size: 12px; color: #8B949E; margin: 0.2rem 0 0 0;">Drag to rotate in 3D • Scroll to zoom • Click node to inspect state</p>
+            </div>
+            <span style="background: rgba(34, 211, 238, 0.15); border: 1px solid #22D3EE; color: #22D3EE; font-size: 12px; font-weight: 700; padding: 0.3rem 0.8rem; border-radius: 9999px;">
+                WebGL 3D Engine Active
+            </span>
         </div>
-        
-        <svg viewBox="0 0 1000 600" style="width: 100%; height: 500px; background: rgba(5, 8, 22, 0.8); border-radius: 14px; border: 1px solid rgba(255,255,255,0.06); cursor: grab;">
-            <defs>
-                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#3B82F6"/>
-                </marker>
-            </defs>
 
-            <!-- Connections -->
-            <line x1="150" y1="300" x2="280" y2="300" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrow)" />
-            <line x1="380" y1="300" x2="480" y2="300" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrow)" />
-            <line x1="530" y1="260" x2="530" y2="160" stroke="#22D3EE" stroke-width="2" marker-end="url(#arrow)" />
-            <line x1="580" y1="300" x2="680" y2="300" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrow)" />
-            
-            <line x1="730" y1="260" x2="730" y2="160" stroke="#EC4899" stroke-width="2" marker-end="url(#arrow)" />
-            <line x1="780" y1="130" x2="880" y2="130" stroke="#C084FC" stroke-width="2" marker-end="url(#arrow)" />
-            <line x1="780" y1="300" x2="880" y2="300" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow)" />
-            <line x1="730" y1="340" x2="730" y2="440" stroke="#EF4444" stroke-width="2" marker-end="url(#arrow)" />
-            <line x1="730" y1="340" x2="880" y2="440" stroke="#10B981" stroke-width="2" marker-end="url(#arrow)" />
-            <line x1="530" y1="340" x2="530" y2="480" stroke="#30E3CA" stroke-width="2" marker-end="url(#arrow)" />
+        <div id="3d-graph-container" style="width: 100%; height: 520px; border-radius: 16px; overflow: hidden; background: #050816; position: relative; border: 1px solid rgba(255,255,255,0.08);"></div>
 
-            <!-- Node 1: Client -->
-            <g transform="translate(50, 260)">
-                <rect width="100" height="80" rx="12" fill="#161B22" stroke="#38BDF8" stroke-width="2" />
-                <text x="50" y="35" fill="#FFF" font-size="14" font-weight="700" text-anchor="middle">📱 Client</text>
-                <text x="50" y="55" fill="#8B949E" font-size="11" text-anchor="middle">Web / Mobile</text>
-            </g>
+        <script src="https://unpkg.com/3d-force-graph"></script>
+        <script>
+            (function() {
+                const gData = {
+                    nodes: [
+                        { id: 'client', name: '📱 Client App', group: 1, val: 20, color: '#38BDF8', desc: 'React 18 / Mobile Client' },
+                        { id: 'lb', name: '🛡️ Load Balancer', group: 1, val: 24, color: '#3B82F6', desc: 'NGINX / Envoy Ingress' },
+                        { id: 'gateway', name: '🚪 API Gateway', group: 2, val: 28, color: '#8B5CF6', desc: 'Kong REST / GraphQL Router' },
+                        { id: 'auth', name: '🔐 Auth Service', group: 2, val: 22, color: '#22D3EE', desc: 'OAuth2 / SAML / Ed25519 JWT' },
+                        { id: 'backend', name: '⚙️ Core Microservices', group: 3, val: 32, color: '#6366F1', desc: 'Rust Axum / Tokio Runtime' },
+                        { id: 'ai', name: '🤖 AI Inference Engine', group: 4, val: 30, color: '#EC4899', desc: 'vLLM / PyTorch GPU Pipeline' },
+                        { id: 'vectordb', name: '🧠 Vector Database', group: 4, val: 26, color: '#C084FC', desc: 'pgvector / HNSW Embeddings' },
+                        { id: 'sqldb', name: '🗄️ PostgreSQL Database', group: 5, val: 28, color: '#F59E0B', desc: 'PostgreSQL 16 Primary ACID' },
+                        { id: 'cache', name: '⚡ Redis Cache', group: 5, val: 24, color: '#EF4444', desc: 'Redis v7 Memory Cluster' },
+                        { id: 'storage', name: '📦 S3 Storage', group: 5, val: 22, color: '#10B981', desc: 'AWS S3 / Cloudflare R2' },
+                        { id: 'monitoring', name: '📊 Prometheus Monitoring', group: 6, val: 25, color: '#30E3CA', desc: 'Prometheus + Grafana Telemetry' }
+                    ],
+                    links: [
+                        { source: 'client', target: 'lb', name: 'HTTPS / WSS' },
+                        { source: 'lb', target: 'gateway', name: 'gRPC Ingress' },
+                        { source: 'gateway', target: 'auth', name: 'Token Verification' },
+                        { source: 'gateway', target: 'backend', name: 'Proxy Route' },
+                        { source: 'backend', target: 'ai', name: 'Async Model Request' },
+                        { source: 'ai', target: 'vectordb', name: 'Vector Similarity Query' },
+                        { source: 'backend', target: 'sqldb', name: 'ACID Transactions' },
+                        { source: 'backend', target: 'cache', name: 'Read-Through Cache' },
+                        { source: 'backend', target: 'storage', name: 'Binary Payload Store' },
+                        { source: 'backend', target: 'monitoring', name: 'OpenTelemetry Spans' },
+                        { source: 'gateway', target: 'monitoring', name: 'Request Metrics' },
+                        { source: 'ai', target: 'monitoring', name: 'GPU Latency Telemetry' }
+                    ]
+                };
 
-            <!-- Node 2: Load Balancer -->
-            <g transform="translate(280, 260)">
-                <rect width="100" height="80" rx="12" fill="#161B22" stroke="#3B82F6" stroke-width="2" />
-                <text x="50" y="35" fill="#FFF" font-size="14" font-weight="700" text-anchor="middle">🛡️ Load Balancer</text>
-                <text x="50" y="55" fill="#8B949E" font-size="11" text-anchor="middle">NGINX / Envoy</text>
-            </g>
+                const container = document.getElementById('3d-graph-container');
+                if (container && typeof ForceGraph3D !== 'undefined') {
+                    const Graph = ForceGraph3D()(container)
+                        .graphData(gData)
+                        .nodeId('id')
+                        .nodeLabel(node => `<div style="background:rgba(16,27,45,0.95); padding:8px 12px; border-radius:8px; border:1px solid ${node.color}; color:#FFF; font-family:sans-serif;"><strong>${node.name}</strong><br><small style="color:#C9D1D9">${node.desc}</small></div>`)
+                        .nodeColor(node => node.color)
+                        .nodeVal('val')
+                        .nodeResolution(16)
+                        .linkSource('source')
+                        .linkTarget('target')
+                        .linkLabel(link => `<span style="color:#38BDF8; font-size:11px; background:#0B1220; padding:2px 6px; border-radius:4px;">${link.name}</span>`)
+                        .linkDirectionalParticles(4)
+                        .linkDirectionalParticleSpeed(0.008)
+                        .linkDirectionalParticleWidth(2.5)
+                        .linkDirectionalParticleColor(() => '#38BDF8')
+                        .linkColor(() => 'rgba(255,255,255,0.15)')
+                        .backgroundColor('#050816');
 
-            <!-- Node 3: API Gateway -->
-            <g transform="translate(480, 260)">
-                <rect width="100" height="80" rx="12" fill="#161B22" stroke="#8B5CF6" stroke-width="2" />
-                <text x="50" y="35" fill="#FFF" font-size="14" font-weight="700" text-anchor="middle">🚪 API Gateway</text>
-                <text x="50" y="55" fill="#8B949E" font-size="11" text-anchor="middle">Kong Router</text>
-            </g>
-
-            <!-- Node 4: Auth -->
-            <g transform="translate(480, 80)">
-                <rect width="100" height="80" rx="12" fill="#161B22" stroke="#22D3EE" stroke-width="2" />
-                <text x="50" y="35" fill="#FFF" font-size="14" font-weight="700" text-anchor="middle">🔐 Auth Service</text>
-                <text x="50" y="55" fill="#8B949E" font-size="11" text-anchor="middle">OAuth2 / JWT</text>
-            </g>
-
-            <!-- Node 5: Backend Services -->
-            <g transform="translate(680, 260)">
-                <rect width="100" height="80" rx="12" fill="#161B22" stroke="#6366F1" stroke-width="2" />
-                <text x="50" y="35" fill="#FFF" font-size="14" font-weight="700" text-anchor="middle">⚙️ Backend</text>
-                <text x="50" y="55" fill="#8B949E" font-size="11" text-anchor="middle">FastAPI / Node</text>
-            </g>
-
-            <!-- Node 6: AI Engine -->
-            <g transform="translate(680, 80)">
-                <rect width="100" height="80" rx="12" fill="#161B22" stroke="#EC4899" stroke-width="2" />
-                <text x="50" y="35" fill="#FFF" font-size="14" font-weight="700" text-anchor="middle">🤖 AI Engine</text>
-                <text x="50" y="55" fill="#8B949E" font-size="11" text-anchor="middle">LangChain</text>
-            </g>
-
-            <!-- Node 7: Vector DB -->
-            <g transform="translate(880, 80)">
-                <rect width="100" height="80" rx="12" fill="#161B22" stroke="#C084FC" stroke-width="2" />
-                <text x="50" y="35" fill="#FFF" font-size="14" font-weight="700" text-anchor="middle">🧠 Vector DB</text>
-                <text x="50" y="55" fill="#8B949E" font-size="11" text-anchor="middle">Chroma / Qdrant</text>
-            </g>
-
-            <!-- Node 8: SQL DB -->
-            <g transform="translate(880, 260)">
-                <rect width="100" height="80" rx="12" fill="#161B22" stroke="#F59E0B" stroke-width="2" />
-                <text x="50" y="35" fill="#FFF" font-size="14" font-weight="700" text-anchor="middle">🗄️ SQL DB</text>
-                <text x="50" y="55" fill="#8B949E" font-size="11" text-anchor="middle">PostgreSQL</text>
-            </g>
-
-            <!-- Node 9: Redis Cache -->
-            <g transform="translate(680, 440)">
-                <rect width="100" height="80" rx="12" fill="#161B22" stroke="#EF4444" stroke-width="2" />
-                <text x="50" y="35" fill="#FFF" font-size="14" font-weight="700" text-anchor="middle">⚡ Redis Cache</text>
-                <text x="50" y="55" fill="#8B949E" font-size="11" text-anchor="middle">In-Memory Cluster</text>
-            </g>
-
-            <!-- Node 10: Storage -->
-            <g transform="translate(880, 440)">
-                <rect width="100" height="80" rx="12" fill="#161B22" stroke="#10B981" stroke-width="2" />
-                <text x="50" y="35" fill="#FFF" font-size="14" font-weight="700" text-anchor="middle">📦 Storage</text>
-                <text x="50" y="55" fill="#8B949E" font-size="11" text-anchor="middle">AWS S3 / R2</text>
-            </g>
-
-            <!-- Node 11: Monitoring -->
-            <g transform="translate(480, 440)">
-                <rect width="100" height="80" rx="12" fill="#161B22" stroke="#30E3CA" stroke-width="2" />
-                <text x="50" y="35" fill="#FFF" font-size="14" font-weight="700" text-anchor="middle">📊 Monitoring</text>
-                <text x="50" y="55" fill="#8B949E" font-size="11" text-anchor="middle">Prometheus</text>
-            </g>
-        </svg>
+                    Graph.controls().autoRotate = true;
+                    Graph.controls().autoRotateSpeed = 0.8;
+                }
+            })();
+        </script>
     </div>
     """
+
