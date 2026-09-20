@@ -1,4 +1,5 @@
 
+import os
 import streamlit as st
 import time
 import json
@@ -11,10 +12,16 @@ from utils.exporter import export_blueprint_markdown
 
 import base64
 
-# Load Logo Base64
-with open("assets/logo_b64.txt", "r") as f:
-    LOGO_B64 = f.read().strip()
-LOGO_DATA_URI = f"data:image/png;base64,{LOGO_B64}"
+# Load Logo Base64 (Safe for Vercel Serverless Execution)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+logo_b64_path = os.path.join(BASE_DIR, "assets", "logo_b64.txt")
+
+if os.path.exists(logo_b64_path):
+    with open(logo_b64_path, "r") as f:
+        LOGO_B64 = f.read().strip()
+else:
+    LOGO_B64 = ""
+LOGO_DATA_URI = f"data:image/png;base64,{LOGO_B64}" if LOGO_B64 else ""
 
 # ---------------------------------------------------------
 # Page Configuration
