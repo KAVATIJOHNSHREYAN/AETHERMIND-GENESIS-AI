@@ -29,34 +29,34 @@ st.set_page_config(
 # ---------------------------------------------------------
 # High-Precision Design System CSS (Vercel / Linear / Apple Standard)
 # ---------------------------------------------------------
-st.markdown(f"""
+css_style = """
 <style>
     /* Google Fonts Import */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
     /* Global Background & Base Typography */
-    html, body, .stApp {{
+    html, body, .stApp {
         background: linear-gradient(135deg, #050816 0%, #0B1220 35%, #111827 70%, #050816 100%) !important;
         background-attachment: fixed !important;
         color: #FFFFFF !important;
         font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
         line-height: 1.6 !important;
         letter-spacing: -0.01em !important;
-    }}
+    }
 
     /* Animated Translucent Logo Watermark */
-    @keyframes watermarkFloat {{
-        0% {{ transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.05; }}
-        50% {{ transform: translate(-48%, -52%) rotate(3deg) scale(1.05); opacity: 0.09; }}
-        100% {{ transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.05; }}
-    }}
+    @keyframes watermarkFloat {
+        0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.05; }
+        50% { transform: translate(-48%, -52%) rotate(3deg) scale(1.05); opacity: 0.09; }
+        100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.05; }
+    }
 
-    .stAppViewContainer::before {{
+    .stAppViewContainer::before {
         content: '';
         position: fixed;
         top: 50%; left: 50%;
         width: 750px; height: 750px;
-        background-image: url("{LOGO_DATA_URI}");
+        background-image: url("__LOGO_DATA_URI__");
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
@@ -64,7 +64,7 @@ st.markdown(f"""
         z-index: 0;
         animation: watermarkFloat 18s ease-in-out infinite;
         filter: drop-shadow(0 0 50px rgba(59, 130, 246, 0.25));
-    }}
+    }
 
     /* Sidebar Styling */
     section[data-testid="stSidebar"] {
@@ -261,7 +261,8 @@ st.markdown(f"""
         margin-bottom: 1.5rem;
     }
 </style>
-""", unsafe_allow_html=True)
+""".replace("__LOGO_DATA_URI__", LOGO_DATA_URI)
+st.markdown(css_style, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
 # Sidebar Engine
