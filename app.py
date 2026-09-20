@@ -44,11 +44,24 @@ css_style = """
         letter-spacing: -0.01em !important;
     }
 
-    /* Hide Top Streamlit Header Bar */
+    /* Custom Header Bar Styling for Sidebar Navigation Button */
     header[data-testid="stHeader"] {
         background-color: transparent !important;
         background: transparent !important;
-        display: none !important;
+        z-index: 99999 !important;
+    }
+    header[data-testid="stHeader"] button {
+        background: rgba(16, 27, 45, 0.85) !important;
+        border: 1px solid rgba(59, 130, 246, 0.4) !important;
+        color: #22D3EE !important;
+        border-radius: 12px !important;
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.3) !important;
+        transition: all 0.2s ease !important;
+    }
+    header[data-testid="stHeader"] button:hover {
+        background: rgba(59, 130, 246, 0.25) !important;
+        border-color: #22D3EE !important;
+        transform: scale(1.05) !important;
     }
 
     /* Animated Translucent Logo Watermark - Straight Pose */
