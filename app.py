@@ -559,8 +559,11 @@ if "blueprint_data" in st.session_state:
         st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>📄 OpenAPI v3.0 JSON Specification</h4>", unsafe_allow_html=True)
         st.code(results["api_spec"], language="json")
 
+    # TAB 5: Master Blueprint Export Hub (Phase 6 Implement)
     with tab_export:
-        st.markdown("<h3 style='font-size:24px; color:#FFFFFF;'>📥 Download Blueprint Specification</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-size:24px; color:#FFFFFF; margin-bottom:0.5rem;'>📄 Master 12-Section Enterprise Software Blueprint Hub</h3>", unsafe_allow_html=True)
+        st.caption("Complete enterprise specification covering Overview, Requirements, Architecture, Database, APIs, Folder Structure, Deployment, Security, Performance, Cost Analysis, Timeline & Risks:")
+        
         markdown_doc = export_blueprint_markdown(
             data["prompt"],
             scores,
@@ -569,12 +572,24 @@ if "blueprint_data" in st.session_state:
             results["sql_schema"],
             results["api_spec"]
         )
-        
-        st.download_button(
-            label="📄 Download Blueprint (.md)",
-            data=markdown_doc,
-            file_name="AetherMind_Genesis_Blueprint.md",
-            mime="text/markdown",
-            use_container_width=True
-        )
-        st.text_area("Raw Blueprint Preview", value=markdown_doc, height=250)
+
+        col_dl1, col_dl2 = st.columns([1, 1])
+        with col_dl1:
+            st.download_button(
+                label="📄 Download Master Blueprint (.md)",
+                data=markdown_doc,
+                file_name=f"AetherMind_Genesis_Master_Blueprint.md",
+                mime="text/markdown",
+                use_container_width=True
+            )
+        with col_dl2:
+            st.download_button(
+                label="💾 Export Document Spec (.txt)",
+                data=markdown_doc,
+                file_name=f"AetherMind_Genesis_Blueprint_Spec.txt",
+                mime="text/plain",
+                use_container_width=True
+            )
+
+        st.markdown("<br><h4 style='font-size:18px; color:#FFFFFF;'>🔍 Master Document Preview & Code Output</h4>", unsafe_allow_html=True)
+        st.text_area("Complete 12-Section Specification Document", value=markdown_doc, height=450)
