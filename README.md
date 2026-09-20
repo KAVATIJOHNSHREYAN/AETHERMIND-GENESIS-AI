@@ -117,6 +117,7 @@ Where weights $w_s, w_p, w_c, w_r$ are dynamically adjusted using sidebar Pareto
 
 ## 📜 License
 
-Distributed under the **MIT License**. See `LICENSE` for details.
+Distributed under the **MIT License**. Copyright (c) 2026 **KAVATI JOHN SHREYAN**. See `LICENSE` for details.
 
-*Created under the **AetherMind** AI Platform Suite.*
+*Created by **KAVATI JOHN SHREYAN** under the **AetherMind** AI Platform Suite.*
+
