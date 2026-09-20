@@ -114,3 +114,8 @@ def generate_interactive_3d_topology_graph(domain: str, tech_profile: str) -> st
     </div>
     """
 
+def generate_interactive_html_graph(domain: str, tech_profile: str) -> str:
+    """Alias for backwards compatibility."""
+    return generate_interactive_3d_topology_graph(domain, tech_profile)
+
+
